@@ -75,6 +75,6 @@ export const SEARCH_TYPE = {
   
 export const SITE_ROOT = '/service-search';
   
-export const SEARCH_API_HOST = 'https://api.nhs.uk/service-search/search?api-version=1'; // 'https://nhsuk-apim-int-uks.azure-api.net/service-search/search?api-version=1';
-export const SEARCH_API_KEY = '813ed0a46ebd481bab9984555ed0f45b'; // 'e29fda7c250d4453a12e3072cd968e6f';
+export const SEARCH_API_HOST = 'https://api.nhs.uk/service-search/search?api-version=1';
+export const SEARCH_API_KEY = '7542f5b4dbd94396910bd1e0af786d78';
   

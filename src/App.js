@@ -36,7 +36,7 @@ class App extends React.Component {
   render() {
     return (
       <div className="App">
-        <h1>NHSUK Find a Service API Tool</h1>
+        <h1>API Tool</h1>
         <form onSubmit={e => this.handleSubmit(e)}>
 
           <label htmlFor='filter'>Select a filter</label>
