@@ -1,8 +1,8 @@
 import React from 'react';
 import getLatLong from './getLatLong';
 import getOrganisations from './getOrganisations';
-import orgMapper from './orgMapper';
 import { 
+  ORGANISATIONS,
   SEXUAL_HEALTH_SERVICES,
 } from './constants';
 
@@ -46,8 +46,11 @@ class App extends React.Component {
             onChange={ e => this.handleInput('filter', e) }
           >
             <option value='' disabled>Select a filter</option>
-            { Object.values(SEXUAL_HEALTH_SERVICES).map(({ code }) => (
-              <option key={ code } value={ code }>{ code }</option>
+            { Object.values({
+              ...ORGANISATIONS, 
+              ...SEXUAL_HEALTH_SERVICES
+            }).map(({ code, display }) => (
+              <option key={ code } value={ code }>{ display }</option>
             ))}
           </select>
 

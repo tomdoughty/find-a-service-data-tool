@@ -62,18 +62,7 @@ export const SEXUAL_HEALTH_SERVICES = {
 	  code: 'Contraception information and advice',
 	  display: 'Contraception information and advice',
 	},
-	SEXUAL_HEALTH_SERVICES: {
-		code: 'Sexual health services',
-	},
 };
-  
-export const SEARCH_TYPE = {
-	GEOLOCATION: 'GEOLOCATION',
-	LOCATION: 'LOCATION',
-	INVALID: 'INVALID',
-};
-  
-export const SITE_ROOT = '/service-search';
   
 export const SEARCH_API_HOST = 'https://api.nhs.uk/service-search/search?api-version=1';
 export const SEARCH_API_KEY = '7542f5b4dbd94396910bd1e0af786d78';
