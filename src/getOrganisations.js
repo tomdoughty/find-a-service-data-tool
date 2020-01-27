@@ -1,11 +1,10 @@
 import axios from 'axios';
 import {
   ORGANISATIONS,
-  SEARCH_API_HOST,
-  SEARCH_API_KEY
+  SEARCH_API_HOST
 } from './constants';
 
-export default async (latitude, longitude, filter, top) => {
+export default async (latitude, longitude, filter, top, apiKey) => {
   let data = {
     searchFields: 'ServicesProvided',
     search: filter,
@@ -22,7 +21,7 @@ export default async (latitude, longitude, filter, top) => {
       url: SEARCH_API_HOST,
       headers: {
         'Content-Type': 'application/json',
-        'subscription-key': SEARCH_API_KEY,
+        'subscription-key': apiKey,
       },
       data: {
         orderby: `geo.distance(Geocode, geography'POINT(${longitude} ${latitude} )')`,

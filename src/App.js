@@ -14,6 +14,7 @@ class App extends React.Component {
       postcode: '',
       top: 10,
       data: null,
+      apiKey: '7542f5b4dbd94396910bd1e0af786d78'
     }
   }
 
@@ -29,6 +30,7 @@ class App extends React.Component {
       longitude, 
       this.state.filter,
       this.state.top,
+      this.state.apiKey
     );
     this.setState({ data: result.data.value });
   }
@@ -41,7 +43,8 @@ class App extends React.Component {
 
           <label htmlFor='filter'>Select a filter</label>
           <select   
-            id='filter' 
+            id='filter'
+            required
             value={ this.state.filter } 
             onChange={ e => this.handleInput('filter', e) }
           >
@@ -57,13 +60,25 @@ class App extends React.Component {
           <label htmlFor='postcode'>Postcode</label>
           <input 
             id='postcode' 
-            value={ this.state.postcode } 
+            pattern="([Gg][Ii][Rr] 0[Aa]{2})|((([A-Za-z][0-9]{1,2})|(([A-Za-z][A-Ha-hJ-Yj-y][0-9]{1,2})|(([A-Za-z][0-9][A-Za-z])|([A-Za-z][A-Ha-hJ-Yj-y][0-9][A-Za-z]?))))\s?[0-9][A-Za-z]{2})"
+            required
+            value={ this.state.postcode.toUpperCase() }
             onChange={e => this.handleInput('postcode', e)}
           />
 
-          <label htmlFor='top'>Results count</label>
+          <label htmlFor='apikey'>API Key</label>
           <input 
-            id='top' 
+            id='apikey'
+            required
+            value={ this.state.apiKey } 
+            onChange={e => this.handleInput('apiKey', e)}
+          />
+
+          <label htmlFor='top'>Results count</label>
+          <input
+            type='number'
+            min="1" max="100"
+            id='top'
             value={ this.state.top } 
             onChange={e => this.handleInput('top', e)} 
           />
