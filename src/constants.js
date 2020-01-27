@@ -65,5 +65,5 @@ export const SEXUAL_HEALTH_SERVICES = {
 };
   
 export const SEARCH_API_HOST = 'https://api.nhs.uk/service-search/search?api-version=1';
-export const SEARCH_API_KEY = '7542f5b4dbd94396910bd1e0af786d78';
+export const SEARCH_API_KEY = '7542f5b4dbd94396910bd1e0af7';
   

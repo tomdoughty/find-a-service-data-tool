@@ -4,7 +4,7 @@ import getOrganisations from './getOrganisations';
 import Table from './Table';
 import { 
   ORGANISATIONS,
-  SEXUAL_HEALTH_SERVICES,
+  SEXUAL_HEALTH_SERVICES
 } from './constants';
 
 class App extends React.Component {
@@ -16,7 +16,7 @@ class App extends React.Component {
       postcode: '',
       top: 10,
       data: null,
-      apiKey: '7542f5b4dbd94396910bd1e0af786d78'
+      apiKey: ''
     }
   }
 
