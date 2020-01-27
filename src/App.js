@@ -1,6 +1,7 @@
 import React from 'react';
 import getLatLong from './getLatLong';
 import getOrganisations from './getOrganisations';
+import Table from './Table';
 import { 
   ORGANISATIONS,
   SEXUAL_HEALTH_SERVICES,
@@ -20,47 +21,65 @@ class App extends React.Component {
   }
 
   handleInput(key, e) {
-    this.setState({ [key]: e.target.value })
+    this.setState({ 
+      [key]: e.target.value,
+      data: null
+    })
   }
 
   handleSubmit(e) {
     e.preventDefault();
     this.setState({ loading: true }, async () => {
-      const { latitude, longitude } = await getLatLong(this.state.postcode);
+      const { postcode, filter, top, apiKey } = this.state;
+      const { latitude, longitude } = await getLatLong(postcode);
       const result = await getOrganisations(
         latitude, 
         longitude, 
-        this.state.filter,
-        this.state.top,
-        this.state.apiKey
+        filter,
+        top,
+        apiKey
       );
       this.setState({ 
         loading: false,
         data: result.data.value 
       });
-    })
+    });
   }
 
   render() {
+    const {
+      loading,
+      filter,
+      postcode,
+      apiKey,
+      top,
+      data
+    } = this.state;
+
     return (
-      <div className="App">
+      <React.Fragment>
         <h1>API Tool</h1>
+
         <form onSubmit={e => this.handleSubmit(e)}>
 
           <label htmlFor='filter'>Select a filter (required)</label>
           <select   
             id='filter'
             required
-            value={ this.state.filter } 
+            value={ filter } 
             onChange={ e => this.handleInput('filter', e) }
           >
             <option value='' disabled>- Select a filter -</option>
-            { Object.values({
-              ...ORGANISATIONS, 
-              ...SEXUAL_HEALTH_SERVICES
-            }).map(({ code, display }) => (
-              <option key={ code } value={ code }>{ display }</option>
-            ))}
+            <optgroup label='Organisations'>
+              { Object.values(ORGANISATIONS).map(({ code, display }) => (
+                <option key={ code } value={ code }>{ display }</option>
+              ))}
+            </optgroup>
+            <optgroup label='Sexual health services'>
+              { Object.values(SEXUAL_HEALTH_SERVICES).map(({ code, display }) => (
+                <option key={ code } value={ code }>{ display }</option>
+              ))}
+            </optgroup>
           </select>
 
           <label htmlFor='postcode'>Postcode (required, full format)</label>
@@ -68,15 +87,15 @@ class App extends React.Component {
             id='postcode' 
             pattern="([Gg][Ii][Rr] 0[Aa]{2})|((([A-Za-z][0-9]{1,2})|(([A-Za-z][A-Ha-hJ-Yj-y][0-9]{1,2})|(([A-Za-z][0-9][A-Za-z])|([A-Za-z][A-Ha-hJ-Yj-y][0-9][A-Za-z]?))))\s?[0-9][A-Za-z]{2})"
             required
-            value={ this.state.postcode.toUpperCase() }
+            value={ postcode.toUpperCase() }
             onChange={e => this.handleInput('postcode', e)}
           />
-
+            
           <label htmlFor='apikey'>API Key (required)</label>
           <input 
             id='apikey'
             required
-            value={ this.state.apiKey } 
+            value={ apiKey } 
             onChange={e => this.handleInput('apiKey', e)}
           />
 
@@ -85,35 +104,18 @@ class App extends React.Component {
             type='number'
             min="1" max="100"
             id='top'
-            value={ this.state.top } 
+            value={ top } 
             onChange={e => this.handleInput('top', e)} 
           />
 
           <button 
             type='submit'
-            disabled={ this.state.loading }
-          >{ this.state.loading ? 'Loading' : 'Submit' }</button>
+            disabled={ loading }
+          >{ loading ? 'Loading' : 'Submit' }</button>
         </form>
-        { this.state.data &&
-          this.state.data.map(org => (
-            <table>
-              <thead>
-                <tr>
-                  <th>Key</th>
-                  <th>Value</th>
-                </tr>
-              </thead>
-              <tbody>
-                { Object.entries(org).map(([ key, value]) => (
-                  <tr>
-                    <td>{ key }</td>
-                    <td>{ JSON.stringify(value) }</td>
-                  </tr>
-                ))}
-              </tbody>
-            </table>
-          ))}
-      </div>
+
+        { data && <Table data={ data } filter={ filter } postcode={ postcode } /> }
+      </React.Fragment>
     );
   }
 }
