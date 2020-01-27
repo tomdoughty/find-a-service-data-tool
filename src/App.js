@@ -10,6 +10,7 @@ class App extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
+      loading: false,
       filter: '',
       postcode: '',
       top: 10,
@@ -22,17 +23,22 @@ class App extends React.Component {
     this.setState({ [key]: e.target.value })
   }
 
-  async handleSubmit(e) {
+  handleSubmit(e) {
     e.preventDefault();
-    const { latitude, longitude } = await getLatLong(this.state.postcode);
-    const result = await getOrganisations(
-      latitude, 
-      longitude, 
-      this.state.filter,
-      this.state.top,
-      this.state.apiKey
-    );
-    this.setState({ data: result.data.value });
+    this.setState({ loading: true }, async () => {
+      const { latitude, longitude } = await getLatLong(this.state.postcode);
+      const result = await getOrganisations(
+        latitude, 
+        longitude, 
+        this.state.filter,
+        this.state.top,
+        this.state.apiKey
+      );
+      this.setState({ 
+        loading: false,
+        data: result.data.value 
+      });
+    })
   }
 
   render() {
@@ -41,14 +47,14 @@ class App extends React.Component {
         <h1>API Tool</h1>
         <form onSubmit={e => this.handleSubmit(e)}>
 
-          <label htmlFor='filter'>Select a filter</label>
+          <label htmlFor='filter'>Select a filter (required)</label>
           <select   
             id='filter'
             required
             value={ this.state.filter } 
             onChange={ e => this.handleInput('filter', e) }
           >
-            <option value='' disabled>Select a filter</option>
+            <option value='' disabled>- Select a filter -</option>
             { Object.values({
               ...ORGANISATIONS, 
               ...SEXUAL_HEALTH_SERVICES
@@ -57,7 +63,7 @@ class App extends React.Component {
             ))}
           </select>
 
-          <label htmlFor='postcode'>Postcode</label>
+          <label htmlFor='postcode'>Postcode (required, full format)</label>
           <input 
             id='postcode' 
             pattern="([Gg][Ii][Rr] 0[Aa]{2})|((([A-Za-z][0-9]{1,2})|(([A-Za-z][A-Ha-hJ-Yj-y][0-9]{1,2})|(([A-Za-z][0-9][A-Za-z])|([A-Za-z][A-Ha-hJ-Yj-y][0-9][A-Za-z]?))))\s?[0-9][A-Za-z]{2})"
@@ -66,7 +72,7 @@ class App extends React.Component {
             onChange={e => this.handleInput('postcode', e)}
           />
 
-          <label htmlFor='apikey'>API Key</label>
+          <label htmlFor='apikey'>API Key (required)</label>
           <input 
             id='apikey'
             required
@@ -74,7 +80,7 @@ class App extends React.Component {
             onChange={e => this.handleInput('apiKey', e)}
           />
 
-          <label htmlFor='top'>Results count</label>
+          <label htmlFor='top'>Results count (required, value 1 to 100)</label>
           <input
             type='number'
             min="1" max="100"
@@ -83,7 +89,10 @@ class App extends React.Component {
             onChange={e => this.handleInput('top', e)} 
           />
 
-          <button type='submit'>Submit</button>
+          <button 
+            type='submit'
+            disabled={ this.state.loading }
+          >{ this.state.loading ? 'Loading' : 'Submit' }</button>
         </form>
         { this.state.data &&
           this.state.data.map(org => (

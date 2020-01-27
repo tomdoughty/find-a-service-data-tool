@@ -1,5 +1,6 @@
 * {
   box-sizing: border-box;
+  outline: 0;
 }
 
 body {
@@ -9,11 +10,7 @@ body {
     sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-}
-
-code {
-  font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
-    monospace;
+  color: #333;
 }
 
 h1 {
@@ -34,7 +31,40 @@ input, select {
   display: block;
   margin-bottom: 20px;
   width: 100%;
+  padding: 15px;
+  height: 45px;
+  border: solid 2px #ccc;
+  font-family: inherit;
+  font-size: inherit;
+}
+
+input:focus, select:focus {
+  border: solid 2px #333;
+}
+
+button {
+  display: inline-block;
   padding: 10px;
+  border: solid 2px #ccc;
+  font-family: inherit;
+  font-size: inherit;
+}
+
+button {
+  background: #333;
+  border: 0;
+  padding: 15px;
+  color: #fff;
+}
+
+button:hover, button:focus {
+  background: #ccc;
+  color: #333;
+  cursor: pointer;
+}
+
+button:disabled {
+  opacity: 0.5;
 }
 
 table {
